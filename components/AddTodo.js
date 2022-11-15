@@ -10,7 +10,11 @@ function AddTodo({ pressHandler }) {
 
   return (
     <View>
-      <TextInput style={styles.input} onChangeText={onChangeHandler} />
+      <TextInput
+        style={styles.input}
+        onChangeText={onChangeHandler}
+        value={text}
+      />
       <Button
         style={styles.button}
         title="add Todo"

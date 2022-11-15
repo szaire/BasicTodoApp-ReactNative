@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import Header from "./components/Header";
 import TodoItem from "./components/TodoItem";
 import AddTodo from "./components/AddTodo";
@@ -14,7 +22,13 @@ function App() {
   ]);
 
   const submitHandler = (text) => {
-    setTodos([{ text: text, key: (todos.length + 1).toString() }, ...todos]);
+    if (text.length > 3) {
+      setTodos([{ text: text, key: (todos.length + 1).toString() }, ...todos]);
+    } else {
+      Alert.alert("Oops!", `Todo's must be over 3 chars long`, [
+        { text: "Ok" },
+      ]);
+    }
   };
 
   const onPressHandler = (key) => {
@@ -22,8 +36,12 @@ function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <View>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.container}>
         <Header />
         <View style={styles.content}>
           <AddTodo pressHandler={submitHandler} />
@@ -36,9 +54,9 @@ function App() {
             />
           </View>
         </View>
+        <StatusBar style="auto" />
       </View>
-      <StatusBar style="auto" />
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -48,9 +66,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   content: {
-    padding: 40,
+    flex: 1,
+    paddingLeft: 40,
+    paddingRight: 40,
+    paddingTop: 40,
   },
   list: {
+    flex: 1,
+    // backgroundColor: "pink",
     marginTop: 20,
   },
 });
